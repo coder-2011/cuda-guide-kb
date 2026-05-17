@@ -1,4 +1,4 @@
 interface:
   display_name: "CUDA Programming Guide"
-  short_description: "Query the local CUDA guide index"
+  short_description: "Ground CUDA answers in the guide"
   default_prompt: "Use $cuda-programming-guide to answer a CUDA programming question with page-grounded guide context."

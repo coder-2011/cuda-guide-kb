@@ -1,50 +1,69 @@
 ---
 name: cuda-programming-guide
-description: Use when answering CUDA programming, CUDA C++, kernel optimization, memory hierarchy, synchronization, streams, occupancy, or CUDA API questions that should be grounded in the NVIDIA CUDA Programming Guide. This is a pure skill with no MCP server; use the bundled repo query CLI.
+description: Ground CUDA programming answers in the local NVIDIA CUDA Programming Guide knowledge base. Use for CUDA C++, kernel optimization, memory hierarchy, synchronization, streams, occupancy, execution model, memory model, CUDA APIs, CUDA intrinsics, and broad CUDA questions where the agent is unsure or should cite guide pages. Pure skill only; no MCP server. Query the repo CLI before answering.
 ---
 
 # CUDA Programming Guide
 
 Use the local CUDA guide index before answering CUDA questions from memory.
 
-## Workflow
+## Locate the Repo
 
-1. From the repo root, run:
-
-   ```bash
-   python3 scripts/query.py "QUESTION" --top-k 8
-   ```
-
-2. For broad questions, keep the user's wording broad. The index includes section records for routing:
-
-   ```bash
-   python3 scripts/query.py "How should I think about CUDA memory performance?" --top-k 10
-   ```
-
-3. For API, intrinsic, or symbol questions, include the exact name:
-
-   ```bash
-   python3 scripts/query.py "What does __syncthreads guarantee?" --top-k 8
-   ```
-
-4. Read the returned excerpts and page numbers. Answer from the retrieved context and cite guide pages when possible.
-
-5. If results look too narrow, rerun with a more general query and `--top-k 12`.
-
-## Output Modes
-
-Markdown:
+Run commands from the repo root containing `scripts/query.py`. If needed:
 
 ```bash
-python3 scripts/query.py "Explain occupancy at a high level"
+cd /home/ubuntu/cuda-guide-kb
 ```
 
-JSON:
+## Query First
+
+For any factual CUDA answer, query before answering:
 
 ```bash
-python3 scripts/query.py "Explain occupancy at a high level" --json
+python3 scripts/query.py "QUESTION" --top-k 8
 ```
 
-## Grounding Rule
+Use JSON when another tool or script will consume the results:
 
-For factual CUDA claims, prefer the retrieved guide chunks over general model knowledge. If the guide results do not answer the question, say that the local CUDA guide index did not contain enough evidence and then clearly separate any outside reasoning.
+```bash
+python3 scripts/query.py "QUESTION" --json --top-k 8
+```
+
+## Query Strategy
+
+For broad questions, keep the user wording broad and ask for more results:
+
+```bash
+python3 scripts/query.py "How should I think about CUDA memory performance?" --top-k 10
+python3 scripts/query.py "What parts of the CUDA model matter most for kernel optimization?" --top-k 10
+```
+
+For exact API, intrinsic, or symbol questions, include the exact name:
+
+```bash
+python3 scripts/query.py "What does __syncthreads guarantee?" --top-k 8
+python3 scripts/query.py "What is cudaMemcpyAsync used for?" --top-k 8
+python3 scripts/query.py "How does cudaMallocManaged relate to unified memory?" --top-k 8
+```
+
+If the first result set is weak, rerun once with a broader phrase and `--top-k 12`:
+
+```bash
+python3 scripts/query.py "CUDA synchronization thread block memory ordering barriers" --top-k 12
+```
+
+## Answering
+
+- Read several returned excerpts, not only the first one.
+- Prefer chunks over bare section records for detailed claims.
+- Use section records as a map when the question is broad.
+- Cite guide page numbers when making factual CUDA claims.
+- Separate guide-grounded facts from outside reasoning.
+- If the local index does not contain enough evidence, say so plainly.
+
+## Common Failure Modes
+
+- Do not answer CUDA details from memory before querying.
+- Do not treat query expansion terms as answers; they only help retrieval.
+- Do not cite a page unless that page appears in the returned results.
+- Do not add an MCP server. This skill is intentionally file-and-script only.
