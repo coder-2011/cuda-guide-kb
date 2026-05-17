@@ -24,21 +24,32 @@ Setup:
 
    If it already exists, enter it and pull the latest changes.
 
-2. Check dependencies before installing anything.
+2. Install the bundled agent skill.
+
+   If the agent runtime has a known skills directory, symlink the skill there:
+
+   SKILL_HOME="${CODEX_HOME:-$HOME/.codex}/skills"
+   mkdir -p "$SKILL_HOME"
+   ln -sfn "$PWD/skills/cuda-programming-guide" "$SKILL_HOME/cuda-programming-guide"
+
+   If symlinks are not supported, copy `skills/cuda-programming-guide` into the runtime's skills directory instead. If the runtime can load repo-local skills directly, point it at that folder.
+
+3. Check dependencies before installing anything.
 
    python3 -c 'import importlib.util; mods=["joblib","numpy","sklearn","scipy"]; print("missing:", [m for m in mods if importlib.util.find_spec(m) is None])'
 
-3. If packages are missing, install `requirements.txt` with the least disruptive tool available in the environment.
+4. If packages are missing, install `requirements.txt` with the least disruptive tool available in the environment.
 
    python3 -m pip install -r requirements.txt
 
-4. Verify the KB works.
+5. Verify the KB works.
 
    python3 scripts/query.py "How should I think about CUDA memory performance?" --top-k 4
    python3 scripts/query.py "What does __syncthreads guarantee?" --top-k 4
    python3 -m unittest discover -s tests
 
 Use:
+- Use `$cuda-programming-guide` when the skill is available.
 - Query the KB before answering factual CUDA questions.
 - Read multiple returned results.
 - For broad questions, use broad queries with `--top-k 8` or higher.

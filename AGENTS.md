@@ -2,6 +2,20 @@
 
 Use this repo when you need answers grounded in the NVIDIA CUDA Programming Guide.
 
+## Install Skill
+
+The bundled agent skill lives at `skills/cuda-programming-guide/`.
+
+If the runtime uses a skills directory, install it with a symlink:
+
+```bash
+SKILL_HOME="${CODEX_HOME:-$HOME/.codex}/skills"
+mkdir -p "$SKILL_HOME"
+ln -sfn "$PWD/skills/cuda-programming-guide" "$SKILL_HOME/cuda-programming-guide"
+```
+
+If symlinks are not supported, copy `skills/cuda-programming-guide` into the runtime's skills directory. If repo-local skills are supported, point the runtime directly at that folder.
+
 ## Query First
 
 For CUDA programming, optimization, memory, kernel execution, synchronization, streams, occupancy, or CUDA API questions, query the local index before relying on model memory:
