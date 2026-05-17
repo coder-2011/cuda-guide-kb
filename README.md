@@ -9,6 +9,46 @@ I use this alot, I hope you find it useful :)
 
 ## Setup Guide
 
+Clone the repo:
+
+```bash
+git clone https://github.com/coder-2011/cuda-guide-kb.git
+cd cuda-guide-kb
+```
+
+Use whatever Python environment you already use. Do not create a virtual environment unless you want one. The query tool only needs `joblib`, `numpy`, `scikit-learn`, and `scipy`.
+
+Check whether the deps are already available:
+
+```bash
+python3 - <<'PY'
+import importlib.util
+mods = ["joblib", "numpy", "sklearn", "scipy"]
+missing = [m for m in mods if importlib.util.find_spec(m) is None]
+print("missing:", missing)
+PY
+```
+
+If anything is missing, install the requirements in the way that fits your environment:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+Other valid options are fine too, for example `uv pip install -r requirements.txt`, a conda environment, a system package image, or an existing project environment. The repo does not care as long as `python3 scripts/query.py ...` can import the dependencies.
+
+Smoke test it:
+
+```bash
+python3 scripts/query.py "How should I think about CUDA memory performance?" --top-k 4
+python3 scripts/query.py "What does __syncthreads guarantee?" --top-k 4
+python3 -m unittest discover -s tests
+```
+
+For Codex-style agents, use the bundled skill at `skills/cuda-programming-guide/`. You can point an agent at this repo directly, or copy/symlink that skill folder into your normal skills directory if your agent runtime supports skill discovery.
+
+There is also a copy-paste agent setup prompt in `PROMPT.md`.
+
 ## How It Works
 
 This repo is intentionally simple. It is a local retrieval system over the CUDA Programming Guide, not a hosted service and not an MCP server.
