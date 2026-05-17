@@ -1,15 +1,15 @@
 # CUDA Programming Guide Knowledge Base
 
-A local knowledge base for you and your agents, all abt cuda! Alot of CUDA information is well documented, but sparsely so, so LLMs don't end up training on the esoteric hard parts. The skill included is built to make agents make tons of queries to the kb so that they never miss information. CUDA isn't as forgiving either, so double checking is very useful. 
+A local knowledge base for you and your agents, all about CUDA. A lot of CUDA information is well documented, but sparsely so, which means LLMs do not always have the esoteric hard parts at hand. The included skill is built to make agents query the KB a lot so they do not miss important details. CUDA is not that forgiving, so double-checking against the guide is useful.
 
-There is an agent skill included to use the knowledge base, and PROMPT.md includes a prompt you can copy paste for an agent to set up the knowledge base
+There is an agent skill included for using the knowledge base, and `PROMPT.md` includes a copy-paste prompt an agent can use to set it up.
 
-I use this alot, I hope you find it useful :)
+I use this a lot. I hope you find it useful.
 
 
 ## Setup Guide
 
-This repo ships with the docs, chunks, and index already built. Setup is just: get the repo, make sure the small Python dependency set is available, then run a query.
+This repo ships with the docs, chunks, and index already built. Setup is: get the repo, make sure the small Python dependency set is available, then run a query.
 
 ### 1. Get the repo
 
@@ -27,7 +27,7 @@ git pull
 
 ### 2. Use your existing Python environment
 
-Do not create a virtual environment unless you personally want one. This repo is meant to work inside whatever environment is natural for the machine or project.
+Do not create a virtual environment unless you personally want one. This repo is meant to work inside whatever environment is natural for your machine or project.
 
 The query tool only needs:
 
@@ -51,7 +51,7 @@ If nothing is missing, skip installation.
 
 ### 3. Install only if needed
 
-If dependencies are missing, install them in the way that best fits your environment.
+If dependencies are missing, install them however best fits your environment.
 
 Plain pip:
 
@@ -65,7 +65,7 @@ uv:
 uv pip install -r requirements.txt
 ```
 
-Conda, system images, prebuilt dev containers, or an existing project package manager are fine too. The repo does not care how the packages arrive; it only needs `python3 scripts/query.py ...` to import them.
+Conda, system images, prebuilt dev containers, or an existing project package manager are fine too. The repo does not care how the packages arrive. It only needs `python3 scripts/query.py ...` to import them.
 
 ### 4. Verify it works
 
@@ -134,7 +134,7 @@ This repo is intentionally simple. It is a local retrieval system over the CUDA 
 
 The source PDF is stored at `docs/cuda-programming-guide.pdf`.
 
-The Markdown file at `docs/cuda-programming-guide.md` is a text extraction of the full PDF. It preserves page boundaries as `## Page N` headings and includes the PDF outline near the top. Page boundaries are important because query results can point back to the guide page that produced the match.
+The Markdown file at `docs/cuda-programming-guide.md` is a text extraction of the full PDF. It preserves page boundaries as `## Page N` headings and includes the PDF outline near the top. Page boundaries matter because query results can point back to the guide page that produced the match.
 
 ### 2. Chunking
 
@@ -145,7 +145,7 @@ The Markdown file at `docs/cuda-programming-guide.md` is a text extraction of th
 
 Chunks are the main answer context. Section records are lighter routing hints that help broad questions land near the right chapter before a person or model reads the matching excerpts.
 
-Each chunk keeps metadata:
+Each chunk keeps this metadata:
 
 - source Markdown path
 - source PDF path
@@ -169,7 +169,7 @@ This is not an embedding API and it does not require network access at query tim
 
 ### 4. Querying
 
-`scripts/query.py` loads the prebuilt index, expands the user's question slightly, scores all records, and prints the top matches.
+`scripts/query.py` loads the prebuilt index, lightly expands the user's question, scores all records, and prints the top matches.
 
 The query path is:
 

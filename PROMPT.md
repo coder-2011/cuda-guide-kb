@@ -1,20 +1,20 @@
 # Agent Setup Prompt
 
-Use this prompt with an agent when you want it to set up and use this CUDA guide knowledge base.
+Use this prompt when you want an agent to set up and use this CUDA guide knowledge base.
 
 ```text
 You are working with the CUDA Programming Guide knowledge base:
 
 https://github.com/coder-2011/cuda-guide-kb
 
-Your job is to make the KB usable in the current environment and then use it to answer CUDA questions with guide-grounded evidence.
+Your job is to make the KB usable in the current environment, then use it to answer CUDA questions with guide-grounded evidence.
 
 Setup rules:
 - Keep the setup portable.
 - Do not create a virtual environment unless I explicitly ask for one.
-- Use the Python environment that already makes sense for this machine or project.
+- Use the Python environment that already fits this machine or project.
 - Before installing anything, check whether the dependencies are already present.
-- If dependencies are missing, choose the least disruptive install method available for this environment: pip, uv pip, conda, system image, or the current project package manager.
+- If dependencies are missing, choose the least disruptive install method available: pip, uv pip, conda, system image, or the current project package manager.
 - The required Python packages are listed in requirements.txt.
 - Do not add an MCP server. This KB is file-and-script based.
 
@@ -28,7 +28,7 @@ Setup steps:
 
    python3 -c 'import importlib.util; mods=["joblib","numpy","sklearn","scipy"]; print("missing:", [m for m in mods if importlib.util.find_spec(m) is None])'
 
-3. If dependencies are missing, install them in the most appropriate way for the current environment. A normal fallback is:
+3. If dependencies are missing, install them in the most appropriate way for the current environment. A reasonable fallback is:
 
    python3 -m pip install -r requirements.txt
 
