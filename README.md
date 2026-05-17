@@ -9,16 +9,34 @@ I use this alot, I hope you find it useful :)
 
 ## Setup Guide
 
-Clone the repo:
+This repo ships with the docs, chunks, and index already built. Setup is just: get the repo, make sure the small Python dependency set is available, then run a query.
+
+### 1. Get the repo
 
 ```bash
 git clone https://github.com/coder-2011/cuda-guide-kb.git
 cd cuda-guide-kb
 ```
 
-Use whatever Python environment you already use. Do not create a virtual environment unless you want one. The query tool only needs `joblib`, `numpy`, `scikit-learn`, and `scipy`.
+If the repo is already present:
 
-Check whether the deps are already available:
+```bash
+cd cuda-guide-kb
+git pull
+```
+
+### 2. Use your existing Python environment
+
+Do not create a virtual environment unless you personally want one. This repo is meant to work inside whatever environment is natural for the machine or project.
+
+The query tool only needs:
+
+- `joblib`
+- `numpy`
+- `scikit-learn`
+- `scipy`
+
+Check whether they are already available:
 
 ```bash
 python3 - <<'PY'
@@ -29,15 +47,27 @@ print("missing:", missing)
 PY
 ```
 
-If anything is missing, install the requirements in the way that fits your environment:
+If nothing is missing, skip installation.
+
+### 3. Install only if needed
+
+If dependencies are missing, install them in the way that best fits your environment.
+
+Plain pip:
 
 ```bash
 python3 -m pip install -r requirements.txt
 ```
 
-Other valid options are fine too, for example `uv pip install -r requirements.txt`, a conda environment, a system package image, or an existing project environment. The repo does not care as long as `python3 scripts/query.py ...` can import the dependencies.
+uv:
 
-Smoke test it:
+```bash
+uv pip install -r requirements.txt
+```
+
+Conda, system images, prebuilt dev containers, or an existing project package manager are fine too. The repo does not care how the packages arrive; it only needs `python3 scripts/query.py ...` to import them.
+
+### 4. Verify it works
 
 ```bash
 python3 scripts/query.py "How should I think about CUDA memory performance?" --top-k 4
@@ -45,9 +75,56 @@ python3 scripts/query.py "What does __syncthreads guarantee?" --top-k 4
 python3 -m unittest discover -s tests
 ```
 
-For Codex-style agents, use the bundled skill at `skills/cuda-programming-guide/`. You can point an agent at this repo directly, or copy/symlink that skill folder into your normal skills directory if your agent runtime supports skill discovery.
+The first query should return memory-performance sections like coalesced global memory access, shared memory bank conflicts, or unified memory performance hints. The second should return the thread block synchronization section around `__syncthreads`.
 
-There is also a copy-paste agent setup prompt in `PROMPT.md`.
+### 5. Query the KB
+
+Broad question:
+
+```bash
+python3 scripts/query.py "What parts of the CUDA model matter most for kernel optimization?" --top-k 10
+```
+
+Exact API or intrinsic:
+
+```bash
+python3 scripts/query.py "What does cudaMemcpyAsync do?" --top-k 8
+python3 scripts/query.py "What does __syncthreads guarantee?" --top-k 8
+```
+
+JSON output for agents or scripts:
+
+```bash
+python3 scripts/query.py "Explain occupancy at a high level" --json --top-k 8
+```
+
+### 6. Use the agent skill
+
+The bundled skill lives at:
+
+```text
+skills/cuda-programming-guide/
+```
+
+Use it in whichever way your agent runtime supports:
+
+- Point the agent at this repo and tell it to use `skills/cuda-programming-guide/`.
+- Copy the skill folder into your normal skills directory.
+- Symlink the skill folder into your normal skills directory.
+
+For a pasteable agent instruction, use `PROMPT.md`.
+
+### 7. Rebuild only when needed
+
+You do not need to rebuild the index for normal use. Rebuild only if you change the Markdown doc, chunker, or indexing logic:
+
+```bash
+python3 scripts/chunk.py
+python3 scripts/build_index.py
+python3 -m unittest discover -s tests
+```
+
+This regenerates `data/chunks.jsonl`, `data/sections.jsonl`, and `index/cuda-guide-tfidf.joblib`.
 
 ## How It Works
 
