@@ -12,7 +12,7 @@ Use the local CUDA guide index before answering CUDA questions from memory.
 Run commands from the repo root containing `scripts/query.py`. If needed:
 
 ```bash
-cd /home/ubuntu/cuda-guide-kb
+cd cuda-guide-kb
 ```
 
 ## Query First

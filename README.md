@@ -6,6 +6,13 @@ There is an agent skill included for using the knowledge base, and `PROMPT.md` i
 
 I use this a lot. I hope you find it useful.
 
+## Agent Setup
+
+Agents should start here:
+
+[agents-setup.md](agents-setup.md)
+
+That file contains the clone/update flow, dependency checks, skill installation, verification commands, query strategy, and rules for answering from this KB.
 
 ## Setup Guide
 
@@ -67,6 +74,8 @@ uv pip install -r requirements.txt
 
 Conda, system images, prebuilt dev containers, or an existing project package manager are fine too. The repo does not care how the packages arrive. It only needs `python3 scripts/query.py ...` to import them.
 
+If `uv` is installed, `scripts/query.py` can also bootstrap the query dependencies automatically when the current `python3` environment is missing them.
+
 ### 4. Verify it works
 
 ```bash
@@ -112,7 +121,7 @@ Use it in whichever way your agent runtime supports:
 - Copy the skill folder into your normal skills directory.
 - Symlink the skill folder into your normal skills directory.
 
-For a pasteable agent instruction, use `PROMPT.md`.
+Agent-specific setup lives in `agents-setup.md`. For a pasteable agent instruction, use `PROMPT.md`.
 
 ### 7. Rebuild only when needed
 

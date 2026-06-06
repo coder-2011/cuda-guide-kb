@@ -12,7 +12,7 @@ Make the KB usable in the current environment, then use it to answer CUDA questi
 Rules:
 - Do not create a virtual environment unless explicitly asked.
 - Use the Python environment that already fits the machine or project.
-- Inspect the repo before acting. Read the README, AGENTS.md, scripts, tests, and requirements as needed.
+- Inspect the repo before acting. Read the README, agents-setup.md, AGENTS.md, scripts, tests, and requirements as needed.
 - If these instructions are incomplete or inaccurate, figure out the correct path from the codebase and take the necessary action.
 - Do not add an MCP server. This KB is local files plus scripts.
 

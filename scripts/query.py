@@ -5,16 +5,43 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
+import shutil
+import sys
 from pathlib import Path
-
-import joblib
-from scipy import sparse
-from sklearn.preprocessing import normalize
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_INDEX = ROOT / "index" / "cuda-guide-tfidf.joblib"
+QUERY_DEPS = ("joblib", "numpy", "scikit-learn==1.8.0", "scipy")
+
+
+def import_query_deps():
+    try:
+        import joblib
+        from scipy import sparse
+        from sklearn.preprocessing import normalize
+    except ModuleNotFoundError as error:
+        uv = shutil.which("uv")
+        if uv and os.environ.get("KB_QUERY_BOOTSTRAPPED") != "1":
+            env = dict(os.environ)
+            env["KB_QUERY_BOOTSTRAPPED"] = "1"
+            args = [uv, "run", "--quiet"]
+            for dep in QUERY_DEPS:
+                args.extend(["--with", dep])
+            args.extend(["python", str(Path(__file__).resolve()), *sys.argv[1:]])
+            os.execvpe(uv, args, env)
+        missing = error.name or "query dependency"
+        raise SystemExit(
+            f"Missing Python package {missing!r}. Install requirements.txt or run with uv: "
+            f"uv run --with {QUERY_DEPS[0]} --with {QUERY_DEPS[1]} --with {QUERY_DEPS[2]} "
+            f"--with {QUERY_DEPS[3]} python scripts/query.py ..."
+        ) from error
+    return joblib, sparse, normalize
+
+
+joblib, sparse, normalize = import_query_deps()
 
 TOPIC_EXPANSIONS = {
     "memory": "global memory shared memory local memory constant memory texture memory coalescing cache l1 l2 bandwidth bank conflicts unified memory cudaMemcpyAsync async copy",

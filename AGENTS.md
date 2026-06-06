@@ -2,6 +2,8 @@
 
 Use this repo when you need answers grounded in the NVIDIA CUDA Programming Guide.
 
+Start with [agents-setup.md](agents-setup.md) for setup, verification, and query rules.
+
 ## Install Skill
 
 The bundled agent skill lives at `skills/cuda-programming-guide/`.
